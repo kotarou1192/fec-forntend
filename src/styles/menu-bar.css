@@ -1,0 +1,73 @@
+.menu {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-right: 1px rgb(211, 211, 211) solid;
+}
+
+.menu__icon {
+  margin-bottom: 10px;
+}
+
+.menu__home {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/home-default.png");
+  background-size: cover;
+}
+
+.menu__home__active {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/home-current.png");
+  background-size: cover;
+}
+
+.menu__home:hover {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/home-hover.png");
+  background-size: cover;
+}
+
+.menu__search {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/search-default.png");
+  background-size: cover;
+}
+
+.menu__search:hover {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/search-hover.png");
+  background-size: cover;
+}
+
+.menu__search__active {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/search-current.png");
+  background-size: cover;
+}
+
+.menu__mypage {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/mypage-default.png");
+  background-size: cover;
+}
+
+.menu__mypage:hover {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/mypage-hover.png");
+  background-size: cover;
+}
+
+.menu__mypage__active {
+  width: 36px;
+  height: 36px;
+  background-image: url("../icons/mypage-current.png");
+  background-size: cover;
+}

@@ -1,0 +1,17 @@
+.loginform {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+}
+
+.loginform__submit {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: rgb(255, 255, 255);
+  background-color: orange;
+  width: 130px;
+  height: 30px;
+  border-radius: 10px;
+}
