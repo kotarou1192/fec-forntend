@@ -6,7 +6,6 @@ import { Tooltip } from "@material-ui/core";
 import { refresh } from "../auth/refresh";
 import { Mypage } from "./mypage";
 import "../styles/edit-profile.css";
-import { fileURLToPath } from "url";
 
 interface User {
   name: string;
@@ -123,8 +122,7 @@ export const EditProfile = (props: Props) => {
     const url = baseURL + `/api/v1/users/${props.user.name}`;
     const buf = await image.arrayBuffer();
     const charcodes = new Uint8Array(buf);
-    const charcodenumbers = charcodes.map((value) => Number(value));
-    const binary_string = String.fromCharCode(...charcodenumbers);
+    const binary_string = String.fromCharCode(...charcodes);
     const base64_encoded_image = btoa(binary_string);
     const body = {
       token: { onetime: Cookies.get("onetime") },
@@ -138,7 +136,7 @@ export const EditProfile = (props: Props) => {
     console.log(image.name);
 
     return await axios
-      .post(url, body)
+      .put(url, body)
       .then((response) => {
         console.log(response.data.status);
         if (response.data.status === "SUCCESS") {
@@ -165,10 +163,7 @@ export const EditProfile = (props: Props) => {
   };
 
   const exitEditMode = () => {
-    props.setContent(
-      <Mypage {...props.user} setContent={props.setContent} />,
-      "mypage"
-    );
+    props.setContent(<Mypage setContent={props.setContent} />, "mypage");
   };
 
   return (
