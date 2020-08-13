@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState } from "react";
 import "../styles/mypage.css";
-import { baseURL } from "./app";
+import { baseURL } from "../auth/baseURL";
 import axios from "axios";
 import Cookies from "js-cookie";
 

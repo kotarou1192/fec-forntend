@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { baseURL } from "./app";
+import { baseURL } from "../auth/baseURL";
 import { logout } from "../auth/logout";
 import { Mypage } from "./mypage";
 import { EditProfile } from "./editProfile";

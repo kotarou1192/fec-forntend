@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseURL } from "../components/app";
+import { baseURL } from "./baseURL";
 import Cookies from "js-cookie";
 import { refresh } from "./refresh";
 

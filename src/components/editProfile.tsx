@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { baseURL } from "./app";
+import { baseURL } from "../auth/baseURL";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { Tooltip } from "@material-ui/core";
 import { refresh } from "../auth/refresh";
 import { Mypage } from "./mypage";
-import "../styles/profile.css";
+import "../styles/edit-profile.css";
+import { fileURLToPath } from "url";
 
 interface User {
   name: string;
@@ -113,23 +114,31 @@ export const EditProfile = (props: Props) => {
 
   const updateIcon = async () => {
     if (image == null) return true;
-    const url = baseURL + `/api/v1/users/${props.user.name}`;
-    const formData = new FormData();
-    formData.append("icon", image);
-    const onetime_token = { token: { onetime: Cookies.get("onetime") } };
-
-    formData.append("token", JSON.stringify(onetime_token));
-
-    console.log(image.name);
     const exp = /.*\.(jpg|jpeg|png)/;
     if (!exp.exec(image.name)) {
       console.log("invalid file");
       setErrorToButton("指定されたファイルは画像ではないです");
       return false;
     }
+    const url = baseURL + `/api/v1/users/${props.user.name}`;
+    const buf = await image.arrayBuffer();
+    const charcodes = new Uint8Array(buf);
+    const charcodenumbers = charcodes.map((value) => Number(value));
+    const binary_string = String.fromCharCode(...charcodenumbers);
+    const base64_encoded_image = btoa(binary_string);
+    const body = {
+      token: { onetime: Cookies.get("onetime") },
+      value: {
+        image: {
+          name: image.name,
+          base64_encoded_image: base64_encoded_image,
+        },
+      },
+    };
+    console.log(image.name);
 
     return await axios
-      .post(url, formData)
+      .post(url, body)
       .then((response) => {
         console.log(response.data.status);
         if (response.data.status === "SUCCESS") {
@@ -164,8 +173,15 @@ export const EditProfile = (props: Props) => {
 
   return (
     <div className="profile">
-      <input type="submit" value="戻る" onClick={exitEditMode}></input>
       <input
+        type="submit"
+        value="戻る"
+        className="profile__edit"
+        onClick={exitEditMode}
+      ></input>
+      <img className="profile__image" src={baseURL + props.user.icon}></img>
+      <input
+        className="profile__image"
         name="item"
         type="file"
         id="picture"
@@ -210,6 +226,7 @@ export const EditProfile = (props: Props) => {
         placement="right"
       >
         <textarea
+          className="profile__exp"
           value={exp}
           onChange={(e) => {
             setExp(e.target.value);
@@ -221,7 +238,11 @@ export const EditProfile = (props: Props) => {
         open={messageOfButton !== "none"}
         placement="right"
       >
-        <input type="submit" onClick={updateAll}></input>
+        <input
+          type="submit"
+          onClick={updateAll}
+          className="profile__logout"
+        ></input>
       </Tooltip>
     </div>
   );

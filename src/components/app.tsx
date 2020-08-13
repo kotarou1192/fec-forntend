@@ -4,8 +4,6 @@ import "../styles/app.css";
 import { Search } from "./search";
 import { Mypage } from "./mypage";
 
-export const baseURL = "http://localhost:3000";
-
 export const App = () => {
   const [selectedMenu, changeSelectedMenu] = useState<string>("home");
   const [content, setContent] = useState<JSX.Element | null>(null);
