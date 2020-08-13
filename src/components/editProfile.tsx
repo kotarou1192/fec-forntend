@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { Tooltip } from "@material-ui/core";
 import { refresh } from "../auth/refresh";
-import { Mypage } from "./mypage";
 import "../styles/edit-profile.css";
 
 interface User {
@@ -16,17 +15,16 @@ interface User {
   is_mypage: boolean;
 }
 
-interface Props {
-  setContent: (content: JSX.Element | null, name: string) => void;
-  user: User;
+interface SetMode {
+  setMode: (name: Mode) => void;
 }
 
-export const EditProfile = (props: Props) => {
+export const EditProfile = (props: User & SetMode) => {
   const [image, setImage] = useState<File>();
-  const [nickname, setNickname] = useState<string>(props.user.nickname);
-  const [name, setName] = useState<string>(props.user.name);
+  const [nickname, setNickname] = useState<string>(props.nickname);
+  const [name, setName] = useState<string>(props.name);
   const [exp, setExp] = useState<string>(
-    props.user.explanation != null ? props.user.explanation : ""
+    props.explanation != null ? props.explanation : ""
   );
   const [nameError, setNameError] = useState({
     message: "",
@@ -55,7 +53,7 @@ export const EditProfile = (props: Props) => {
   };
 
   const updateProfile = async () => {
-    const url = baseURL + `/api/v1/users/${props.user.name}`;
+    const url = baseURL + `/api/v1/users/${props.name}`;
     return await axios
       .put(url, {
         token: { onetime: Cookies.get("onetime") },
@@ -79,10 +77,7 @@ export const EditProfile = (props: Props) => {
               updateProfile();
               return;
             }
-            props.setContent(
-              <Mypage setContent={props.setContent} />,
-              "mypage"
-            );
+            props.setMode("default");
           });
         }
         console.log(res.data.body.messages);
@@ -119,7 +114,7 @@ export const EditProfile = (props: Props) => {
       setErrorToButton("指定されたファイルは画像ではないです");
       return false;
     }
-    const url = baseURL + `/api/v1/users/${props.user.name}`;
+    const url = baseURL + `/api/v1/users/${props.name}`;
     const buf = await image.arrayBuffer();
     const charcodes = new Uint8Array(buf);
     const binary_string = String.fromCharCode(...charcodes);
@@ -133,7 +128,6 @@ export const EditProfile = (props: Props) => {
         },
       },
     };
-    console.log(image.name);
 
     return await axios
       .put(url, body)
@@ -148,10 +142,7 @@ export const EditProfile = (props: Props) => {
             if (res === "SUCCESS") {
               return updateIcon();
             }
-            props.setContent(
-              <Mypage setContent={props.setContent} />,
-              "mypage"
-            );
+            props.setMode("default");
             return false;
           });
         }
@@ -163,7 +154,7 @@ export const EditProfile = (props: Props) => {
   };
 
   const exitEditMode = () => {
-    props.setContent(<Mypage setContent={props.setContent} />, "mypage");
+    props.setMode("default");
   };
 
   return (
@@ -174,7 +165,7 @@ export const EditProfile = (props: Props) => {
         className="profile__edit"
         onClick={exitEditMode}
       ></input>
-      <img className="profile__image" src={baseURL + props.user.icon}></img>
+      <img className="profile__image" src={baseURL + props.icon}></img>
       <input
         className="profile__image"
         name="item"
